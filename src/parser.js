@@ -23,39 +23,54 @@ export function parseClass(className) {
   var cls = className.trim();
   if (!cls) return null;
 
-  var isNeg = cls.charAt(0) === '-';
-  var raw = isNeg ? cls.slice(1) : cls;
+  var variant = null;
+  var raw = cls;
+
+  if (cls.indexOf(':') !== -1) {
+    var parts = cls.split(':');
+    if (parts.length === 2 && parts[0] === 'hover') {
+      variant = 'hover';
+      raw = parts[1];
+    }
+  }
+
+  var isNeg = raw.charAt(0) === '-';
+  var finalRaw = isNeg ? raw.slice(1) : raw;
 
   var result =
-    parseDisplay(raw) ||
-    parseSpacing(raw, isNeg) ||
-    parseTextSize(raw) ||
-    parseFontWeight(raw) ||
-    parseTextAlign(raw) ||
-    parseBgColor(raw) ||
-    parseTextColor(raw) ||
-    parseBorderWidth(raw) ||
-    parseBorderColor(raw) ||
-    parseBorderRadius(raw) ||
-    parseBorderStyle(raw) ||
-    parseFlex(raw) ||
-    parseGrid(raw) ||
-    parseGap(raw) ||
-    parseSizing(raw, isNeg) ||
-    parsePosition(raw) ||
-    parseInset(raw, isNeg) ||
-    parseZIndex(raw) ||
-    parseShadow(raw) ||
-    parseCursor(raw) ||
-    parseOverflow(raw) ||
-    parseOpacity(raw) ||
-    parseTransition(raw) ||
-    parseMisc(raw);
+    parseDisplay(finalRaw) ||
+    parseSpacing(finalRaw, isNeg) ||
+    parseTextSize(finalRaw) ||
+    parseFontWeight(finalRaw) ||
+    parseTextAlign(finalRaw) ||
+    parseBgColor(finalRaw) ||
+    parseTextColor(finalRaw) ||
+    parseBorderWidth(finalRaw) ||
+    parseBorderColor(finalRaw) ||
+    parseBorderRadius(finalRaw) ||
+    parseBorderStyle(finalRaw) ||
+    parseFlex(finalRaw) ||
+    parseGrid(finalRaw) ||
+    parseGap(finalRaw) ||
+    parseSizing(finalRaw, isNeg) ||
+    parsePosition(finalRaw) ||
+    parseInset(finalRaw, isNeg) ||
+    parseZIndex(finalRaw) ||
+    parseShadow(finalRaw) ||
+    parseCursor(finalRaw) ||
+    parseOverflow(finalRaw) ||
+    parseOpacity(finalRaw) ||
+    parseTransition(finalRaw) ||
+    parseAnimation(finalRaw) ||
+    parseMisc(finalRaw);
 
   if (!result) return null;
 
   var escaped = escapeSelector(className);
-  return { selector: '.' + escaped, rules: result };
+  var selector = '.' + escaped;
+  if (variant === 'hover') selector += ':hover';
+
+  return { selector: selector, rules: result };
 }
 //#endregion
 
@@ -147,6 +162,12 @@ function parseTextAlign(cls) {
 }
 
 function parseBgColor(cls) {
+  if (cls === 'bg-shimmer') {
+    return {
+      'background-image': 'linear-gradient(90deg, rgba(255,255,255,0) 0%, rgba(255,255,255,0.2) 50%, rgba(255,255,255,0) 100%)',
+      'background-size': '200% 100%'
+    };
+  }
   var match = cls.match(/^bg-(.+)$/);
   if (!match) return null;
   var value = resolveColor(match[1]);
@@ -513,6 +534,19 @@ function parseTransition(cls) {
   };
 
   return map[cls] || easeMap[cls] || null;
+}
+
+function parseAnimation(cls) {
+  var map = {
+    'animate-none': { 'animation': 'none' },
+    'animate-spin': { 'animation': 'tss-spin 1s linear infinite' },
+    'animate-ping': { 'animation': 'tss-ping 1s cubic-bezier(0, 0, 0.2, 1) infinite' },
+    'animate-pulse': { 'animation': 'tss-pulse 2s cubic-bezier(0.4, 0, 0.6, 1) infinite' },
+    'animate-bounce': { 'animation': 'tss-bounce 1s infinite' },
+    'animate-shimmer': { 'animation': 'tss-shimmer 2s infinite linear' },
+  };
+
+  return map[cls] || null;
 }
 
 function parseMisc(cls) {

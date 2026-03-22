@@ -64,27 +64,31 @@ async function build() {
   });
 
 
-  // ── TypeScript declarations ──
-  const dts = `// tea-simple-smart-css (TSS) v${VERSION} — TypeScript declarations
+  const dts = `// tea-simple-smart-css (TSS) v-${VERSION} — TypeScript declarations
 
-export interface ParseResult {
-  selector: string;
-  rules: Record<string, string>;
-}
+        export interface ParseResult {
+          selector: string;
+          rules: Record<string, string>;
+        }
 
-export interface TSSAPI {
-  version:    string;
-  refresh():  void;
-  toggleDark(): boolean;
-  parse(className: string): ParseResult | null;
-}
+        export interface TSSAPI {
+          version:    string;
+          refresh():  void;
+          toggleDark(): boolean;
+          parse(className: string): ParseResult | null;
+        }
 
-export declare function parseClass(cls: string): ParseResult | null;
-export declare function buildThemeCSS(): string;
+        // Named exports for direct import { toggleDark, parse } from '...';
+        export declare const version: string;
+        export declare function refresh(): void;
+        export declare function toggleDark(): boolean;
+        export declare function parse(className: string): ParseResult | null;
 
-declare const TSS: TSSAPI;
-export default TSS;
+        // Default export for import TSS from '...';
+        declare const TSS: TSSAPI;
+        export default TSS;
 `;
+
   fs.writeFileSync(path.join(DIST, 'index.d.ts'), dts, 'utf8');
 
   console.log('\nBuild complete!\n');
