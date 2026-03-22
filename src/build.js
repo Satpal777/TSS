@@ -19,7 +19,11 @@ const DIST = path.join(__dirname, '..', 'dist');
 if (!fs.existsSync(DIST)) fs.mkdirSync(DIST, { recursive: true });
 
 const ENTRY = path.join(__dirname, 'index.js');
-const BANNER = `/*!\n * TSS v1.0.0\n * A lightweight utility-first CSS engine with auto light/dark mode\n */`;
+const BANNER = `/*!
+ * tea-simple-smart-css (TSS) v1.0.0
+ * A lightweight utility-first CSS engine with auto light/dark mode
+ * MIT License
+ */`;
 
 async function build() {
   console.log('Building TSS with esbuild...\n');
@@ -55,7 +59,7 @@ async function build() {
 
 
   // ── TypeScript declarations ──
-  const dts = `// TSS v1.0.0 — TypeScript declarations
+  const dts = `// tea-simple-smart-css (TSS) v1.0.0 — TypeScript declarations
 
 export interface ParseResult {
   selector: string;

@@ -1,5 +1,5 @@
 {
-  "name": "tss-css",
+  "name": "tea-simple-smart-css",
   "version": "1.0.0",
   "description": "A zero-config, lightweight utility-first CSS engine with automatic light/dark mode.",
   "type": "module",
@@ -30,7 +30,9 @@
     "zero-config",
     "cdn"
   ],
-  "author": "Your Name",
+  "author": "Satpalsinh Rana",
+  "license": "MIT",
+  "homepage": "https://github.com/Satpal777/tea-simple-smart-css#readme",
   "devDependencies": {
     "esbuild": "^0.27.4"
   }
