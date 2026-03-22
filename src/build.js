@@ -12,6 +12,9 @@ import fs from 'fs';
 import path from 'path';
 import { fileURLToPath } from 'url';
 
+const pkg = JSON.parse(fs.readFileSync(new URL('../package.json', import.meta.url), 'utf8'));
+const VERSION = pkg.version;
+
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 
@@ -20,7 +23,7 @@ if (!fs.existsSync(DIST)) fs.mkdirSync(DIST, { recursive: true });
 
 const ENTRY = path.join(__dirname, 'index.js');
 const BANNER = `/*!
- * tea-simple-smart-css (TSS) v1.0.0
+ * tea-simple-smart-css (TSS) v${VERSION}
  * A lightweight utility-first CSS engine with auto light/dark mode
  * MIT License
  */`;
@@ -35,6 +38,7 @@ async function build() {
     outfile: path.join(DIST, 'tss.js'),
     banner: { js: BANNER },
     target: ['es2018'],
+    define: { __TSS_VERSION__: JSON.stringify(VERSION) },
   });
 
   await esbuild.build({
@@ -46,6 +50,7 @@ async function build() {
     banner: { js: BANNER },
     minify: true,
     target: ['es2018'],
+    define: { __TSS_VERSION__: JSON.stringify(VERSION) },
   });
 
   await esbuild.build({
@@ -55,11 +60,12 @@ async function build() {
     outfile: path.join(DIST, 'tss.esm.js'),
     banner: { js: BANNER },
     target: ['es2018'],
+    define: { __TSS_VERSION__: JSON.stringify(VERSION) },
   });
 
 
   // ── TypeScript declarations ──
-  const dts = `// tea-simple-smart-css (TSS) v1.0.0 — TypeScript declarations
+  const dts = `// tea-simple-smart-css (TSS) v${VERSION} — TypeScript declarations
 
 export interface ParseResult {
   selector: string;

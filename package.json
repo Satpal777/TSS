@@ -1,6 +1,6 @@
 {
   "name": "tea-simple-smart-css",
-  "version": "1.0.0",
+  "version": "1.0.3",
   "description": "A zero-config, lightweight utility-first CSS engine with automatic light/dark mode.",
   "type": "module",
   "module": "dist/tss.esm.js",

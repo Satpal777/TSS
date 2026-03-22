@@ -17,8 +17,7 @@ export function buildThemeCSS() {
     darkVars += `  --tss-${name}: ${dark};\n`;
   }
 
-  return `//#region TSS Theme — Auto Light/Dark
-//#region Base Reset
+  return `
 *, *::before, *::after {
   box-sizing: border-box;
   margin: 0;
@@ -42,31 +41,19 @@ body {
   color: var(--tss-body);
   transition: background-color 0.2s ease, color 0.2s ease;
 }
-//#endregion
 
-//#region Light Mode (default)
 :root {
 ${lightVars}}
-//#endregion
 
-//#region Dark Mode (auto via media query)
 @media (prefers-color-scheme: dark) {
   :root {
 ${darkVars}  }
 }
-//#endregion
 
-//#region Manual override: .dark on <html>
 html.dark {
 ${darkVars}}
 
-}
-//#endregion
-
-//#region Manual override: .light on <html>
 html.light {
 ${lightVars}}
-//#endregion
-//#endregion
 `;
 }

@@ -7,11 +7,11 @@ import { parseClass } from './parser.js';
  * Auto-initializes on DOMContentLoaded
  */
 
-const VERSION = '1.0.0';
+const VERSION = '__TSS_VERSION__';
 
 //#region State
 let _themeStyle = null;
-let _utilStyle  = null;
+let _utilStyle = null;
 const _cache = new Set();
 let _pendingCSS = '';
 let _rafScheduled = false;
@@ -124,7 +124,7 @@ function toggleDark() {
 
   try {
     localStorage.setItem('tss-theme', isDark ? 'light' : 'dark');
-  } catch (e) {}
+  } catch (e) { }
 
   return !isDark;
 }
@@ -137,7 +137,7 @@ function restoreThemePreference() {
     } else if (saved === 'light') {
       document.documentElement.classList.add('light');
     }
-  } catch (e) {}
+  } catch (e) { }
 }
 
 function refresh() {
@@ -158,13 +158,11 @@ if (typeof document !== 'undefined') {
 }
 //#endregion
 
-//#region Public API
-const TSS = {
-  version:    VERSION,
-  refresh:    refresh,
-  toggleDark: toggleDark,
-  parse:      parseClass,
+// Public API
+export {
+  VERSION as version,
+  refresh,
+  toggleDark,
+  parseClass as parse,
 };
-
-export default TSS;
 //#endregion
